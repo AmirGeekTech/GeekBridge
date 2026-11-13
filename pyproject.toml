@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "geekbridge"
+version = "0.4.0"
+description = "A polished desktop toolkit for Persian text shaping and multilingual translation."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+dependencies = [
+  "PySide6>=6.7,<7",
+  "arabic-reshaper>=3.0.0,<4",
+  "python-bidi>=0.6.0,<1",
+  "requests>=2.31,<3"
+]
+
+[project.optional-dependencies]
+offline = ["argostranslate>=1.9"]
+dev = ["pytest>=8", "ruff>=0.6", "pyinstaller>=6"]
+
+[project.scripts]
+geekbridge = "geekbridge.main:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
