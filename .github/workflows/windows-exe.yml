@@ -1,0 +1,31 @@
+name: Build GeekBridge for Windows
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e '.[dev]'
+      - name: Build executable
+        run: pyinstaller --noconfirm --clean --onefile --windowed --name GeekBridge --icon assets/geekbridge.ico --add-data 'src/geekbridge/assets;geekbridge/assets' --collect-all arabic_reshaper --collect-all bidi --paths src src/geekbridge/main.py
+      - name: Upload EXE
+        uses: actions/upload-artifact@v4
+        with:
+          name: GeekBridge-Windows-x64
+          path: dist/GeekBridge.exe
+          if-no-files-found: error
